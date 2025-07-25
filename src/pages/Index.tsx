@@ -3,9 +3,60 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
+import { useState } from 'react';
 
 const Index = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedAnime, setSelectedAnime] = useState(null);
+
+  // Mock anime data
+  const animeData = [
+    {
+      id: 1,
+      title: "Attack on Titan",
+      rating: 9.0,
+      status: "Completed",
+      episodes: 75,
+      year: 2013,
+      genre: ["Action", "Drama"],
+      poster: "https://cdn.myanimelist.net/images/anime/10/47347.jpg",
+      trailer: "https://www.youtube.com/watch?v=KKzmOh4SuBc"
+    },
+    {
+      id: 2,
+      title: "Death Note",
+      rating: 9.0,
+      status: "Completed",
+      episodes: 37,
+      year: 2006,
+      genre: ["Supernatural", "Thriller"],
+      poster: "https://cdn.myanimelist.net/images/anime/9/9453.jpg",
+      trailer: "https://www.youtube.com/watch?v=NlJZ-YgAt-c"
+    },
+    {
+      id: 3,
+      title: "One Piece",
+      rating: 8.7,
+      status: "Airing",
+      episodes: 1000,
+      year: 1999,
+      genre: ["Adventure", "Comedy"],
+      poster: "https://cdn.myanimelist.net/images/anime/6/73245.jpg",
+      trailer: "https://www.youtube.com/watch?v=MCb13lbVGE0"
+    }
+  ];
+
+  const topRatedAnime = [
+    { title: "Fullmetal Alchemist: Brotherhood", rating: 9.1, rank: 1 },
+    { title: "Attack on Titan Season 3", rating: 9.0, rank: 2 },
+    { title: "Death Note", rating: 9.0, rank: 3 },
+    { title: "Demon Slayer", rating: 8.7, rank: 4 },
+    { title: "One Piece", rating: 8.7, rank: 5 }
+  ];
+
   return (
     <div className="min-h-screen bg-[#1F1F1F] text-white">
       {/* Header */}
@@ -173,6 +224,128 @@ const Index = () => {
                   </Button>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* MyAnimeList Integration Section */}
+        <div className="mb-8">
+          <Card className="bg-[#2D2D2D] border-[#3D3D3D] text-white">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <Icon name="Play" size={20} className="text-[#2563EB]" />
+                    MyAnimeList Integration
+                  </CardTitle>
+                  <CardDescription className="text-[#FFFFFF]/60">Search anime, view ratings and trailers</CardDescription>
+                </div>
+                <Badge className="bg-[#2563EB]/20 text-[#2563EB] border-[#2563EB]/30">Entertainment</Badge>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <Tabs defaultValue="search" className="w-full">
+                <TabsList className="grid w-full grid-cols-3 bg-[#1F1F1F] border-[#3D3D3D]">
+                  <TabsTrigger value="search" className="data-[state=active]:bg-[#2563EB] data-[state=active]:text-white">Search</TabsTrigger>
+                  <TabsTrigger value="ratings" className="data-[state=active]:bg-[#2563EB] data-[state=active]:text-white">Top Rated</TabsTrigger>
+                  <TabsTrigger value="trailers" className="data-[state=active]:bg-[#2563EB] data-[state=active]:text-white">Trailers</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="search" className="mt-4">
+                  <div className="space-y-4">
+                    <div className="relative">
+                      <Input
+                        placeholder="Search anime..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="bg-[#1F1F1F] border-[#3D3D3D] text-white placeholder:text-[#FFFFFF]/40 pr-10"
+                      />
+                      <Icon name="Search" size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#FFFFFF]/40" />
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {animeData.map((anime) => (
+                        <Card key={anime.id} className="bg-[#1F1F1F] border-[#3D3D3D] hover:border-[#2563EB] transition-all duration-200 cursor-pointer">
+                          <CardContent className="p-4">
+                            <div className="flex gap-3">
+                              <div className="w-16 h-20 bg-[#3D3D3D] rounded-md flex items-center justify-center">
+                                <Icon name="Image" size={24} className="text-[#FFFFFF]/40" />
+                              </div>
+                              <div className="flex-1 space-y-1">
+                                <h3 className="font-semibold text-white text-sm">{anime.title}</h3>
+                                <div className="flex items-center gap-2">
+                                  <Icon name="Star" size={12} className="text-yellow-500 fill-current" />
+                                  <span className="text-sm font-medium text-yellow-500">{anime.rating}</span>
+                                </div>
+                                <div className="flex flex-wrap gap-1">
+                                  {anime.genre.slice(0, 2).map((g) => (
+                                    <Badge key={g} variant="secondary" className="text-xs bg-[#2563EB]/20 text-[#2563EB] border-[#2563EB]/30">
+                                      {g}
+                                    </Badge>
+                                  ))}
+                                </div>
+                                <div className="flex items-center gap-2 text-xs text-[#FFFFFF]/60">
+                                  <span>{anime.episodes} eps</span>
+                                  <span>•</span>
+                                  <span>{anime.year}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="ratings" className="mt-4">
+                  <div className="space-y-3">
+                    {topRatedAnime.map((anime) => (
+                      <div key={anime.rank} className="flex items-center justify-between p-3 bg-[#1F1F1F] rounded-lg border border-[#3D3D3D]">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-[#2563EB] rounded-full flex items-center justify-center text-white font-bold text-sm">
+                            {anime.rank}
+                          </div>
+                          <span className="text-white font-medium">{anime.title}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Icon name="Star" size={16} className="text-yellow-500 fill-current" />
+                          <span className="text-yellow-500 font-semibold">{anime.rating}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="trailers" className="mt-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {animeData.slice(0, 2).map((anime) => (
+                      <Card key={anime.id} className="bg-[#1F1F1F] border-[#3D3D3D] overflow-hidden">
+                        <div className="aspect-video bg-[#3D3D3D] flex items-center justify-center relative group cursor-pointer">
+                          <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-200"></div>
+                          <Icon name="Play" size={32} className="text-white group-hover:scale-110 transition-transform duration-200" />
+                          <div className="absolute bottom-2 left-2 bg-black/80 px-2 py-1 rounded text-xs text-white">
+                            Trailer
+                          </div>
+                        </div>
+                        <CardContent className="p-4">
+                          <h3 className="font-semibold text-white mb-2">{anime.title}</h3>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <Icon name="Star" size={14} className="text-yellow-500 fill-current" />
+                              <span className="text-sm text-yellow-500">{anime.rating}</span>
+                            </div>
+                            <Button size="sm" className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white">
+                              <Icon name="ExternalLink" size={14} className="mr-1" />
+                              Watch
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </TabsContent>
+              </Tabs>
             </CardContent>
           </Card>
         </div>
