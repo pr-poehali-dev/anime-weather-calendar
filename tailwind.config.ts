@@ -61,7 +61,14 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				'smart-blue': 'hsl(var(--smart-home-blue))',
+				'smart-green': 'hsl(var(--smart-home-green))',
+				'smart-orange': 'hsl(var(--smart-home-orange))',
+				'smart-red': 'hsl(var(--smart-home-red))',
+				'smart-purple': 'hsl(var(--smart-home-purple))',
+				'smart-cyan': 'hsl(var(--smart-home-cyan))',
+				'smart-yellow': 'hsl(var(--smart-home-yellow))'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
